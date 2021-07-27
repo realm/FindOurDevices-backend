@@ -1,0 +1,7 @@
+{
+  "config_version": 20210727,
+  "name": "findourdevices",
+  "location": "US-VA",
+  "deployment_model": "GLOBAL",
+  "environment": "development"
+}

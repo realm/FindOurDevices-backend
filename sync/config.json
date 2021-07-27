@@ -1,0 +1,22 @@
+{
+  "state": "enabled",
+  "database_name": "findourdevices",
+  "partition": {
+    "key": "_partition",
+    "type": "string",
+    "required": true,
+    "permissions": {
+      "read": {
+        "%%true": {
+          "%function": {
+            "name": "canReadPartition",
+            "arguments": ["%%partition"]
+          }  
+        }
+      },
+      "write": { "%%user.id": "%%partition" }
+    }
+  },
+  "development_mode_enabled": true,
+  "service_name": "mongodb-atlas"
+}
