@@ -38,7 +38,7 @@ realm-cli login --api-key=[public API key] --private-api-key=[private API key]
 If logged in successfully, you can now import the app:
 
 ```bash
-cd realm-findourdevices-backend
+cd FindOurDevices-backend
 realm-cli push
 ```
 
