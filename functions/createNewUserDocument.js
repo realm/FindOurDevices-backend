@@ -1,6 +1,5 @@
 exports = async function createNewUserDocument({ user }) {
   const db = context.services.get('mongodb-atlas').db('findourdevices');
-  const users = db.collection('User');
 
   const newUser = {
     _id: BSON.ObjectID(user.id),
@@ -12,7 +11,7 @@ exports = async function createNewUserDocument({ user }) {
   };
 
   try {
-    return await users.insertOne(newUser);
+    return await db.collection('User').insertOne(newUser);
   }
   catch (err) {
     console.error('Error inserting user: ', err.message);

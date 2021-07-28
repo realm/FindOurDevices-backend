@@ -1,6 +1,6 @@
 import { BSON } from 'realm';
 
-exports = async function(partition) {
+exports = async function canReadPartition(partition) {
   if (!isValidPartition(partition)) {
     console.warn('Invalid partition. ', partition);
     return false;

@@ -2,50 +2,30 @@ import { BSON } from 'realm';
 
 exports = async function addGroupMember(groupId, newMemberEmail) {
   if (!groupId)
-    return {
-      success: false,
-      error: { message: 'Please provide which group to add the member to.' }
-    };
+    return { error: { message: 'Please provide which group to add the member to.' } };
 
   if (!newMemberEmail)
-    return {
-      success: false,
-      error: { message: 'Please provide the email address of the member to add.' }
-    };
+    return { error: { message: 'Please provide the email address of the member to add.' } };
 
   const db = context.services.get('mongodb-atlas').db('findourdevices');
   const realmUser = context.user;
 
   try {
     const groupDoc = await db.collection('Group').findOne({ _id: groupId });
-    if (!groupDoc?._id) {
-      return {
-        success: false,
-        error: { message: 'The group does not exist.' }
-      };
-    }
+    if (!groupDoc?._id)
+      return { error: { message: 'The group does not exist.' } };
   
     if (groupDoc.ownerId !== BSON.ObjectID(realmUser.id))
-      return {
-        success: false,
-        error: { message: 'Only group owners can add other members.' }
-      };
+      return { error: { message: 'Only group owners can add other members.' } };
   
     const newMemberUserDoc = await db.collection('User').findOne({ email: newMemberEmail });
     if (!newMemberUserDoc?._id)
-      return {
-        success: false,
-        error: { message: 'There is no member with the given email.' }
-      };
+      return { error: { message: 'There is no member with the given email.' } };
 
     // TODO: Temporarily pick the first device
     const deviceDoc = await db.collection('Device').findOne({ _id: newMemberUserDoc.deviceIds[0] });
-    if (!deviceDoc?._id) {
-      return {
-        success: false,
-        error: { message: 'The member must have a device to join the group.' }
-      };
-    }
+    if (!deviceDoc?._id)
+      return { error: { message: 'The member must have a device to join the group.' } };
 
     // Now we create and insert the new group member into the group's "members" array
     const newGroupMember = {
@@ -82,9 +62,6 @@ exports = async function addGroupMember(groupId, newMemberEmail) {
   }
   catch (err) {
     console.error('Error adding group member: ', err.message);
-    return {
-      success: false,
-      error: { message: err.message || 'There was an error adding the group member.' }
-    };
+    return { error: { message: err.message || 'There was an error adding the group member.' } };
   }
 };

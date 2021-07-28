@@ -2,10 +2,7 @@ import { BSON } from 'realm';
 
 exports = async function createGroup(name) {
   if (!name)
-    return {
-      success: false,
-      error: { message: 'Please provide a name for the group.' }
-    };
+    return { error: { message: 'Please provide a name for the group.' } };
 
   const db = context.services.get('mongodb-atlas').db('findourdevices');
   const realmUser = context.user;
@@ -14,20 +11,14 @@ exports = async function createGroup(name) {
     const userDoc = await db.collection('User').findOne({ _id: BSON.ObjectID(realmUser.id) });
     if (!userDoc?._id) {
       console.log('Could not find the user with id: ', realmUser.id);
-      return {
-        success: false,
-        error: { message: 'There was an error creating the group.' }
-      };
+      return { error: { message: 'There was an error creating the group.' } };
     }
 
     // TODO: Temporarily pick the first device
     const deviceDoc = await db.collection('Device').findOne({ _id: userDoc.deviceIds[0] });
     if (!deviceDoc?._id) {
       console.log('Could not find the device with id: ', userDoc.deviceIds[0]);
-      return {
-        success: false,
-        error: { message: 'You must have a device to join a group.' }
-      };
+      return { error: { message: 'You must have a device to join a group.' } };
     }
 
     // The following is the read-only information available to everyone in the group
@@ -71,9 +62,6 @@ exports = async function createGroup(name) {
   }
   catch (err) {
     console.error('Error creating group: ', err.message);
-    return {
-      success: false,
-      error: { message: err.message || 'There was an error creating the group.' }
-    };
+    return { error: { message: err.message || 'There was an error creating the group.' } };
   }
 };
