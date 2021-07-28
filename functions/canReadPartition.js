@@ -2,7 +2,7 @@ import { BSON } from 'realm';
 
 exports = async function(partition) {
   if (!isValidPartition(partition)) {
-    console.warn('Invalid partition.');
+    console.warn('Invalid partition. ', partition);
     return false;
   }
 
