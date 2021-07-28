@@ -9,8 +9,7 @@ exports = async function(partition) {
   const db = context.services.get('mongodb-atlas').db('findourdevices');
   const realmUser = context.user;
 
-  const partitionKey = getPartitionKey(partition);
-  const partitionValue = getPartitionValue(partition);
+  const { partitionKey, partitionValue } = getPartitionKeyValue(partition);
 
   switch (partitionKey) {
     case 'user':
@@ -26,6 +25,10 @@ exports = async function(partition) {
 
 const isGroupMember = async (db, userId, groupPartition) => {
   try {
+    // In MongoDB you can use dot-notation to query embedded/nested documents.
+    // This query selects the user with matching ids and where the "groups" array
+    // field has an embedded document with a key "groupPartition" whose value
+    // is the provided group partition string.
     const currentUserDoc = await db.collection('User').findOne({
       _id: userId,
       'groups.groupPartition': groupPartition
@@ -42,6 +45,7 @@ const isGroupMember = async (db, userId, groupPartition) => {
 
 const isValidPartition = (partition) => partition.split('=').length === 2;
 
-const getPartitionKey = (partition) => partition.split('=')[0];
-
-const getPartitionValue = (partition) => partition.split('=')[1];
+const getPartitionKeyValue = (partition) => ({
+  partitionKey: partition.split('=')[0],
+  partitionValue: partition.split('=')[1]
+});
