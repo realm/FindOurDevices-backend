@@ -14,7 +14,6 @@ exports = async function createGroup(name) {
     const userDoc = await db.collection('User').findOne({ _id: BSON.ObjectID(realmUser.id) });
     if (!userDoc?._id) {
       console.log('Could not find the user with id: ', realmUser.id);
-      // Return a friendly message to the client.
       return {
         success: false,
         error: { message: 'There was an error creating the group.' }
@@ -25,7 +24,6 @@ exports = async function createGroup(name) {
     const deviceDoc = await db.collection('Device').findOne({ _id: userDoc.deviceIds[0] });
     if (!deviceDoc?._id) {
       console.log('Could not find the device with id: ', userDoc.deviceIds[0]);
-      // Return a friendly message to the client.
       return {
         success: false,
         error: { message: 'You must have a device to join a group.' }
@@ -39,6 +37,8 @@ exports = async function createGroup(name) {
       deviceId: deviceDoc._id,
       deviceName: deviceDoc.name
     };
+    // Before adding deviceDoc.location, we want to be sure that it has been set.
+    // Otherwise the location will be undefined and hence break the Realm schema validation.
     if (deviceDoc.location)
       groupMember.location = deviceDoc.location;
 
@@ -62,7 +62,10 @@ exports = async function createGroup(name) {
       shareLocation: true
     };
 
-    await db.collection('GroupMembership').insertOne(groupMembership);
+    await db.collection('User').updateOne(
+      { _id: userDoc._id },
+      { $push: { groups: groupMembership } }
+    );
 
     return { success: true };
   }
