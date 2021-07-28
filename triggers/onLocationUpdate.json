@@ -1,0 +1,27 @@
+{
+  "name": "onLocationUpdate",
+  "type": "DATABASE",
+  "config": {
+    "operation_types": [
+      "UPDATE"
+    ],
+    "database": "findourdevices",
+    "collection": "Device",
+    "service_name": "mongodb-atlas",
+    "match": {
+      "updateDescription.updatedFields.location": {
+        "$exists": true
+      }
+    },
+    "project": {
+      "_id": 0,
+      "documentKey": 1,
+      "updateDescription.updatedFields.location": 1
+    },
+    "full_document": false,
+    "full_document_before_change": false,
+    "unordered": false
+  },
+  "function_name": "updateGroupMemberLocation",
+  "disabled": false
+}

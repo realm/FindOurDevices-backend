@@ -10,14 +10,14 @@ exports = async function createGroup(name) {
   try {
     const userDoc = await db.collection('User').findOne({ _id: BSON.ObjectID(realmUser.id) });
     if (!userDoc?._id) {
-      console.log('Could not find the user with id: ', realmUser.id);
+      console.warn('Could not find a user doc matching the realm user id: ', realmUser.id);
       return { error: { message: 'There was an error creating the group.' } };
     }
 
     // TODO: Temporarily pick the first device
     const deviceDoc = await db.collection('Device').findOne({ _id: userDoc.deviceIds[0] });
     if (!deviceDoc?._id) {
-      console.log('Could not find the device with id: ', userDoc.deviceIds[0]);
+      console.warn('Could not find a device doc matching the device id: ', userDoc.deviceIds[0]);
       return { error: { message: 'You must have a device to join a group.' } };
     }
 

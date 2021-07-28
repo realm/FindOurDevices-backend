@@ -27,5 +27,10 @@
     "name": "resetFunc",
     "private": false,
     "can_evaluate": {}
+  },
+  {
+    "name": "updateGroupMemberLocation",
+    "private": true,
+    "run_as_system": true
   }
 ]
