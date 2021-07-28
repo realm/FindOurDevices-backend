@@ -1,4 +1,4 @@
-exports = async function canWritePartition(partition) {
+exports = function canWritePartition(partition) {
   const realmUser = context.user;
 
   return partition === `user=${realmUser.id}`;
