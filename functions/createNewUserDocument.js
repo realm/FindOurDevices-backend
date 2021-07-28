@@ -4,9 +4,10 @@ exports = async function createNewUserDocument({ user }) {
 
   const newUser = {
     _id: BSON.ObjectID(user.id),
-    _partition: user.id,
+    _partition: `user=${user.id}`,
+    email: user.data.email,
     displayName: getInitialDisplayName(user.data.email),
-    devices: [],
+    deviceIds: [],
     groups: []
   };
 
@@ -14,8 +15,7 @@ exports = async function createNewUserDocument({ user }) {
     return await users.insertOne(newUser);
   }
   catch (err) {
-    console.log('Error inserting user: ', err.message);
-    return { error: { message: err.message || 'Could not create a user.' } };
+    console.error('Error inserting user: ', err.message);
   }
 };
 

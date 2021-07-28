@@ -14,7 +14,7 @@ exports = async function(partition) {
 
   switch (partitionKey) {
     case 'user':
-    case 'groupMembership':
+    case 'device':
       return partitionValue === realmUser.id;
     case 'group':
       return await isGroupMember(db, BSON.ObjectID(realmUser.id), partition);
@@ -26,11 +26,13 @@ exports = async function(partition) {
 
 const isGroupMember = async (db, userId, groupPartition) => {
   try {
-    // TODO: Create index on userId
-    const groupMembership = await db.collection('GroupMembership').findOne({ userId, groupPartition });
+    const currentUserDoc = await db.collection('User').findOne({
+      _id: userId,
+      'groups.groupPartition': groupPartition
+    });
 
     // The "!!" converts the value to a boolean (true if truthy, false if falsy)
-    return !!(groupMembership?.id);
+    return !!(currentUserDoc?._id);
   }
   catch (err) {
     console.error('Error retrieving group membership.');
