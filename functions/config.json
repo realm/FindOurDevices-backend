@@ -29,6 +29,11 @@
     "private": true
   },
   {
+    "name": "leaveGroup",
+    "private": false,
+    "run_as_system": true
+  },
+  {
     "name": "resetFunc",
     "private": false,
     "can_evaluate": {}
