@@ -14,7 +14,14 @@
           }  
         }
       },
-      "write": { "%%user.id": "%%partition" }
+      "write": {
+        "%%true": {
+          "%function": {
+            "name": "canWritePartition",
+            "arguments": ["%%partition"]
+          }  
+        }
+      }
     }
   },
   "development_mode_enabled": true,
