@@ -10,7 +10,8 @@
     "service_name": "mongodb-atlas",
     "match": {},
     "project": {
-      "_id": 0,
+      "_id": 1,
+      "operationType": 1,
       "documentKey": 1
     },
     "full_document": false,
