@@ -1,5 +1,3 @@
-import { BSON } from 'realm';
-
 // In our trigger "onNewDevice.json" we have configured the "project" field to only
 // filter out the field "documentKey" (a doc with the _id of the modified document)
 exports = async function addDeviceId({ documentKey }) {

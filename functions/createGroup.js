@@ -1,5 +1,3 @@
-import { BSON } from 'realm';
-
 exports = async function createGroup(name) {
   if (!name)
     return { error: { message: 'Please provide a name for the group.' } };

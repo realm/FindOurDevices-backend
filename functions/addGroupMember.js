@@ -1,5 +1,3 @@
-import { BSON } from 'realm';
-
 exports = async function addGroupMember(groupId, newMemberEmail) {
   if (!groupId)
     return { error: { message: 'Please provide which group to add the member to.' } };

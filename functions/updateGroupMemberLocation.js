@@ -1,7 +1,5 @@
-import { BSON } from 'realm';
-
-// In our trigger "onLocationUpdate.json" we have configured the "project" field to
-// only filter out the fields "documentKey" (the _id of the modified document) and
+// In our trigger "onLocationUpdate.json" we have configured the "project" field to only
+// filter out the fields "documentKey" (a doc with the _id of the modified document) and
 // "updateDescription.updatedFields.location". These will appear in the change event object.
 exports = async function updateGroupMemberLocation({ documentKey, updateDescription }) {
   const db = context.services.get('mongodb-atlas').db('findourdevices');

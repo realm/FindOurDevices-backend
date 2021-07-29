@@ -1,5 +1,3 @@
-import { BSON } from 'realm';
-
 exports = async function canReadPartition(partition) {
   if (!isValidPartition(partition)) {
     console.warn('Invalid partition. ', partition);
@@ -9,6 +7,7 @@ exports = async function canReadPartition(partition) {
   const db = context.services.get('mongodb-atlas').db('findourdevices');
   const realmUser = context.user;
 
+  // We have decided to use the format "<object type>=<some id>" for our partitions.
   const { partitionKey, partitionValue } = getPartitionKeyValue(partition);
 
   switch (partitionKey) {
