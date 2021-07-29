@@ -1,5 +1,10 @@
 [
   {
+    "name": "addDeviceId",
+    "private": true,
+    "run_as_system": true
+  },
+  {
     "name": "addGroupMember",
     "private": false,
     "run_as_system": true
