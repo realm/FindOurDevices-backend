@@ -11,7 +11,7 @@ exports = async function updateGroupMemberLocation({ documentKey, updateDescript
     // We first need to find the user's group memberships that use the device that was
     // just updated (since users have the possibility to use different devices per group)
     const userDoc = await db.collection('User').findOne(
-      { _id: BSON.ObjectID(realmUser.id) },
+      { _id: BSON.ObjectId(realmUser.id) },
       // We can use projection to specify which fields to return if we don't need that many
       // (Use "1" for including the field. "_id" will return by default)
       { groups: 1 }

@@ -13,7 +13,7 @@ exports = async function addGroupMember(groupId, newMemberEmail) {
     if (!groupDoc?._id)
       return { error: { message: 'The group does not exist.' } };
   
-    if (groupDoc.ownerId !== BSON.ObjectID(realmUser.id))
+    if (groupDoc.ownerId !== BSON.ObjectId(realmUser.id))
       return { error: { message: 'Only group owners can add other members.' } };
   
     const newMemberUserDoc = await db.collection('User').findOne({ email: newMemberEmail });

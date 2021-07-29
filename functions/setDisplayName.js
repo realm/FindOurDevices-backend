@@ -9,7 +9,7 @@ exports = async function setDisplayName(name) {
     // We will first update the display name on the user, then we need to propagate
     // that change onto all of its groups that it's a member of so that the group
     // members can see the new display name when its synced.
-    const userDoc = await db.collection('User').findOne({ _id: BSON.ObjectID(realmUser.id) });
+    const userDoc = await db.collection('User').findOne({ _id: BSON.ObjectId(realmUser.id) });
     if (!userDoc?._id) {
       console.warn('Could not find a user doc matching the realm user id: ', realmUser.id);
       return { error: { message: 'There was an error setting the display name.' } };

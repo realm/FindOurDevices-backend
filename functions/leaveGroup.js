@@ -4,7 +4,7 @@ exports = async function leaveGroup(groupId) {
   
   const db = context.services.get('mongodb-atlas').db('findourdevices');
   const realmUser = context.user;
-  const userId = BSON.ObjectID(realmUser.id);
+  const userId = BSON.ObjectId(realmUser.id);
 
   try {
     const groupDoc = await db.collection('Group').findOne({ _id: groupId });

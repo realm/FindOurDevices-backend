@@ -15,7 +15,7 @@ exports = async function canReadPartition(partition) {
     case 'device':
       return partitionValue === realmUser.id;
     case 'group':
-      return await isGroupMember(db, BSON.ObjectID(realmUser.id), partition);
+      return await isGroupMember(db, BSON.ObjectId(realmUser.id), partition);
     default:
       console.warn('Unsupported partition key/prefix.');
       return false;

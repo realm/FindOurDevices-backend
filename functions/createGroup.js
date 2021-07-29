@@ -6,7 +6,7 @@ exports = async function createGroup(name) {
   const realmUser = context.user;
 
   try {
-    const userDoc = await db.collection('User').findOne({ _id: BSON.ObjectID(realmUser.id) });
+    const userDoc = await db.collection('User').findOne({ _id: BSON.ObjectId(realmUser.id) });
     if (!userDoc?._id) {
       console.warn('Could not find a user doc matching the realm user id: ', realmUser.id);
       return { error: { message: 'There was an error creating the group.' } };
@@ -30,7 +30,7 @@ exports = async function createGroup(name) {
     if (deviceDoc.location)
       groupMember.location = deviceDoc.location;
 
-    const groupId = new BSON.ObjectID();
+    const groupId = new BSON.ObjectId();
     const group = {
       _id: groupId,
       _partition: `group=${groupId}`,

@@ -7,7 +7,7 @@ exports = async function addDeviceId({ documentKey }) {
 
   try {
     return await db.collection('User').updateOne(
-      { _id: BSON.ObjectID(realmUser.id) },
+      { _id: BSON.ObjectId(realmUser.id) },
       { $push: { deviceIds: deviceId } }
     );
   }

@@ -2,7 +2,7 @@ exports = async function createNewUserDocument({ user }) {
   const db = context.services.get('mongodb-atlas').db('findourdevices');
 
   const newUser = {
-    _id: BSON.ObjectID(user.id),
+    _id: BSON.ObjectId(user.id),
     _partition: `user=${user.id}`,
     email: user.data.email,
     displayName: getInitialDisplayName(user.data.email),
