@@ -34,6 +34,11 @@
     "can_evaluate": {}
   },
   {
+    "name": "setDisplayName",
+    "private": false,
+    "run_as_system": true
+  },
+  {
     "name": "updateGroupMemberLocation",
     "private": true,
     "run_as_system": true
