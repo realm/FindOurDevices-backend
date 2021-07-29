@@ -1,0 +1,68 @@
+{
+  "title": "Group",
+  "bsonType": "object",
+  "required": [
+    "_id",
+    "_partition",
+    "ownerId",
+    "name",
+    "members"
+  ],
+  "properties": {
+    "_id": {
+      "bsonType": "objectId"
+    },
+    "_partition": {
+      "bsonType": "string"
+    },
+    "ownerId": {
+      "bsonType": "objectId"
+    },
+    "name": {
+      "bsonType": "string"
+    },
+    "members": {
+      "bsonType": "array",
+      "items": {
+        "title": "GroupMember",
+        "bsonType": "object",
+        "required": [
+          "userId",
+          "displayName",
+          "deviceId"
+        ],
+        "properties": {
+          "userId": {
+            "bsonType": "objectId"
+          },
+          "displayName": {
+            "bsonType": "string"
+          },
+          "deviceId": {
+            "bsonType": "objectId"
+          },
+          "location": {
+            "title": "Location",
+            "bsonType": "object",
+            "required": [
+              "updatedAt",
+              "longitude",
+              "latitude"
+            ],
+            "properties": {
+              "updatedAt": {
+                "bsonType": "date"
+              },
+              "longitude": {
+                "bsonType": "double"
+              },
+              "latitude": {
+                "bsonType": "double"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

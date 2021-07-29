@@ -1,0 +1,14 @@
+{
+  "collection": "Group",
+  "database": "findourdevices",
+  "roles": [
+    {
+      "name": "default",
+      "apply_when": {},
+      "insert": false,
+      "delete": false,
+      "search": false,
+      "additional_fields": {}
+    }
+  ]
+}

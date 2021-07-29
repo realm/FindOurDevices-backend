@@ -1,15 +1,59 @@
 {
   "title": "User",
+  "bsonType": "object",
+  "required": [
+    "_id",
+    "_partition",
+    "email",
+    "displayName",
+    "deviceIds",
+    "groups"
+  ],
   "properties": {
     "_id": {
       "bsonType": "objectId"
     },
     "_partition": {
       "bsonType": "string"
+    },
+    "email": {
+      "bsonType": "string"
+    },
+    "displayName": {
+      "bsonType": "string"
+    },
+    "deviceIds": {
+      "bsonType": "array",
+      "items": {
+        "bsonType": "objectId"
+      }
+    },
+    "groups": {
+      "bsonType": "array",
+      "items": {
+        "title": "GroupMembership",
+        "bsonType": "object",
+        "required": [
+          "groupId",
+          "groupPartition",
+          "deviceId",
+          "shareLocation"
+        ],
+        "properties": {
+          "groupId": {
+            "bsonType": "objectId"
+          },
+          "groupPartition": {
+            "bsonType": "string"
+          },
+          "deviceId": {
+            "bsonType": "objectId"
+          },
+          "shareLocation": {
+            "bsonType": "bool"
+          }
+        }
+      }
     }
-  },
-  "required": [
-    "_id",
-    "_partition"
-  ]
+  }
 }

@@ -1,0 +1,47 @@
+{
+  "title": "Device",
+  "bsonType": "object",
+  "required": [
+    "_id",
+    "_partition",
+    "iosOrAndroidId",
+    "name"
+  ],
+  "properties": {
+    "_id": {
+      "bsonType": "objectId"
+    },
+    "_partition": {
+      "bsonType": "string"
+    },
+    "iosOrAndroidId": {
+      "bsonType": "string"
+    },
+    "name": {
+      "bsonType": "string"
+    },
+    "phoneNumber": {
+      "bsonType": "string"
+    },
+    "location": {
+      "title": "Location",
+      "bsonType": "object",
+      "required": [
+        "updatedAt",
+        "longitude",
+        "latitude"
+      ],
+      "properties": {
+        "updatedAt": {
+          "bsonType": "date"
+        },
+        "longitude": {
+          "bsonType": "double"
+        },
+        "latitude": {
+          "bsonType": "double"
+        }
+      }
+    }
+  }
+}
