@@ -29,8 +29,7 @@ exports = async function addGroupMember(groupId, newMemberEmail) {
     const newGroupMember = {
       userId: newMemberUserDoc._id,
       displayName: newMemberUserDoc.displayName,
-      deviceId: deviceDoc._id,
-      deviceName: deviceDoc.name
+      deviceId: deviceDoc._id
     };
     // Before adding deviceDoc.location, we want to be sure that it has been set.
     // Otherwise the location will be undefined and hence break the Realm schema validation.
