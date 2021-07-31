@@ -12,6 +12,6 @@ exports = async function addDeviceId({ documentKey }) {
     );
   }
   catch (err) {
-    console.error('Error adding the device id onto the user.');
+    console.error('Error adding the device id onto the user: ', err.message);
   }
 };

@@ -37,7 +37,7 @@ const isGroupMember = async (db, userId, groupPartition) => {
     return !!(currentUserDoc?._id);
   }
   catch (err) {
-    console.error('Error retrieving group membership.');
+    console.error('Error retrieving group membership: ', err.message);
     return false;
   }
 }
