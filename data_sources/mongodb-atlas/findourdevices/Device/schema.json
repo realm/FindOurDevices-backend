@@ -4,6 +4,7 @@
   "required": [
     "_id",
     "_partition",
+    "ownerId",
     "iosOrAndroidId",
     "name"
   ],
@@ -13,6 +14,9 @@
     },
     "_partition": {
       "bsonType": "string"
+    },
+    "ownerId": {
+      "bsonType": "objectId"
     },
     "iosOrAndroidId": {
       "bsonType": "string"
