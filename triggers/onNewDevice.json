@@ -12,9 +12,9 @@
     "project": {
       "_id": 1,
       "operationType": 1,
-      "documentKey": 1
+      "fullDocument": 1
     },
-    "full_document": false,
+    "full_document": true,
     "full_document_before_change": false,
     "unordered": false
   },
