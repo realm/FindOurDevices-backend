@@ -34,6 +34,7 @@
         "required": [
           "groupId",
           "groupPartition",
+          "groupName",
           "deviceId",
           "shareLocation"
         ],
@@ -42,6 +43,9 @@
             "bsonType": "objectId"
           },
           "groupPartition": {
+            "bsonType": "string"
+          },
+          "groupName": {
             "bsonType": "string"
           },
           "deviceId": {
