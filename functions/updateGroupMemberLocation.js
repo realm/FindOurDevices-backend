@@ -1,5 +1,5 @@
 // In our trigger "onLocationUpdate.json" we have configured the "project" field to only
-// filter out the fields "fullDocument" and "updateDescription.updatedFields.location".
+// filter out the fields "fullDocument" and "updateDescription.updatedFields".
 // These will appear in the change event object. For update operations such as this, the
 // "fullDocument" represents the most current majority-committed version and may differ
 // from the changes described in "updateDescription" if other majority-committed operations
@@ -8,7 +8,16 @@ exports = async function updateGroupMemberLocation({ fullDocument, updateDescrip
   const db = context.services.get('mongodb-atlas').db('findourdevices');
   const userId = fullDocument.ownerId;
   const deviceId = fullDocument._id;
-  const updatedLocation = updateDescription.updatedFields.location;
+  
+  const updatedLocation = fullDocument.location;
+  // or:
+  // const updatedLocation = {
+  //   updatedAt: updateDescription.updatedFields['location.updatedAt'],
+  //   longitude: updateDescription.updatedFields['location.longitude'],
+  //   latitude: updateDescription.updatedFields['location.latitude']
+  // };
+  // don't: (due to the embedded nature)
+  // const updatedLocation = updateDescription.updatedFields.location;
 
   try {
     // We first need to find the user's group memberships that use the device that was
@@ -24,8 +33,10 @@ exports = async function updateGroupMemberLocation({ fullDocument, updateDescrip
 
     // When filtering out the group memberships that the device is associated with, also
     // make sure that the user has opted to share its location.
+    // (As seen below, we need to convert the device IDs to strings before comparing them
+    // whenever the ID is retrieved from fullDocument._id)
     const groupIds = userDoc.groups
-      .filter(group => group.deviceId === deviceId && group.shareLocation)
+      .filter(group => group.deviceId.toString() === deviceId.toString() && group.shareLocation)
       .map(group => group.groupId);
 
     if (groupIds.length === 0)
@@ -41,7 +52,7 @@ exports = async function updateGroupMemberLocation({ fullDocument, updateDescrip
     return await db.collection('Group').updateMany(
       { _id: { $in: groupIds } },
       { $set: { 'members.$[member].location': updatedLocation } },
-      { arrayFilters: [ { 'member.userId': userId }, { 'member.deviceId': deviceId } ] }
+      { arrayFilters: [ { 'member.userId': userId, 'member.deviceId': deviceId } ] }
     );
   }
   catch (err) {
