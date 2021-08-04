@@ -12,11 +12,14 @@ exports = async function createGroup(name) {
       return { error: { message: 'There was an error creating the group.' } };
     }
 
+    if (userDoc.deviceIds.length === 0)
+      return { error: { message: 'You must have a device to join a group.' } };
+
     // TODO: Temporarily pick the first device
     const deviceDoc = await db.collection('Device').findOne({ _id: userDoc.deviceIds[0] });
     if (!deviceDoc?._id) {
       console.warn('Could not find a device doc matching the device id: ', userDoc.deviceIds[0]);
-      return { error: { message: 'You must have a device to join a group.' } };
+      return { error: { message: 'The selected device does not exist.' } };
     }
 
     // The following is the read-only information available to everyone in the group
@@ -46,6 +49,7 @@ exports = async function createGroup(name) {
     const groupMembership = {
       groupId: group._id,
       groupPartition: group._partition,
+      groupName: group.name,
       deviceId: deviceDoc._id,
       shareLocation: true
     };

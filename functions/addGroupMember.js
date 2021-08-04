@@ -20,10 +20,17 @@ exports = async function addGroupMember(groupId, newMemberEmail) {
     if (!newMemberUserDoc?._id)
       return { error: { message: 'There is no member with the given email.' } };
 
+    const isAlreadyMember = groupDoc.members?.some(member => member.userId === newMemberUserDoc._id);
+    if (isAlreadyMember)
+      return { error: { message: 'The user is already a member of the group.' } };
+
+    if (userDoc.deviceIds.length === 0)
+      return { error: { message: 'The member must have a device to join the group.' } };
+
     // TODO: Temporarily pick the first device
     const deviceDoc = await db.collection('Device').findOne({ _id: newMemberUserDoc.deviceIds[0] });
     if (!deviceDoc?._id)
-      return { error: { message: 'The member must have a device to join the group.' } };
+      return { error: { message: "The member's selected device does not exist." } };
 
     // Now we create and insert the new group member into the group's "members" array
     const newGroupMember = {
@@ -31,8 +38,10 @@ exports = async function addGroupMember(groupId, newMemberEmail) {
       displayName: newMemberUserDoc.displayName,
       deviceId: deviceDoc._id
     };
-    // Before adding deviceDoc.location, we want to be sure that it has been set.
+    // Before adding 'deviceDoc.location', we want to be sure that it has been set.
     // Otherwise the location will be undefined and hence break the Realm schema validation.
+    // Objects/Documents that don't adhere to the schema will not be synced. (This can occur
+    // in the event when a user registers but don't allow the client app location permissions.)
     if (deviceDoc.location)
       newGroupMember.location = deviceDoc.location;
 
@@ -46,6 +55,7 @@ exports = async function addGroupMember(groupId, newMemberEmail) {
     const newGroupMembership = {
       groupId: groupDoc._id,
       groupPartition: groupDoc._partition,
+      groupName: groupDoc.name,
       deviceId: deviceDoc._id,
       shareLocation: true
     };
