@@ -16,7 +16,7 @@ exports = async function removeGroup(groupId) {
 
     await db.collection('Group').deleteOne({ _id: groupId });
     
-    // After deleting the group, we also need to remove all GroupMembershipsGroupMemberships
+    // After deleting the group, we also need to remove all GroupMemberships
     // from the 'groups' array of each User
     const memberIds = groupDoc.members.map(member => member.userId);
     if (memberIds.length > 0) {
