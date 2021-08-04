@@ -8,16 +8,12 @@
     "database": "findourdevices",
     "collection": "Device",
     "service_name": "mongodb-atlas",
-    "match": {
-      "updateDescription.updatedFields.location": {
-        "$exists": true
-      }
-    },
+    "match": {},
     "project": {
       "_id": 1,
       "operationType": 1,
       "fullDocument": 1,
-      "updateDescription.updatedFields.location": 1
+      "updateDescription.updatedFields": 1
     },
     "full_document": true,
     "full_document_before_change": false,
