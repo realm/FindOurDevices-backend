@@ -7,20 +7,22 @@ exports = async function addGroupMember(groupId, newMemberEmail) {
 
   const db = context.services.get('mongodb-atlas').db('findourdevices');
   const realmUser = context.user;
+  groupId = BSON.ObjectId(groupId);
 
   try {
     const groupDoc = await db.collection('Group').findOne({ _id: groupId });
     if (!groupDoc?._id)
       return { error: { message: 'The group does not exist.' } };
   
-    if (groupDoc.ownerId !== BSON.ObjectId(realmUser.id))
+    // Stringify the ObjectIds when comparing as the references themselves may differ
+    if (groupDoc.ownerId.toString() !== realmUser.id)
       return { error: { message: 'Only group owners can add other members.' } };
   
     const newMemberUserDoc = await db.collection('User').findOne({ email: newMemberEmail });
     if (!newMemberUserDoc?._id)
       return { error: { message: 'There is no member with the given email.' } };
 
-    const isAlreadyMember = groupDoc.members?.some(member => member.userId === newMemberUserDoc._id);
+    const isAlreadyMember = groupDoc.members?.some(member => member.userId.toString() === newMemberUserDoc._id.toString());
     if (isAlreadyMember)
       return { error: { message: 'The user is already a member of the group.' } };
 
