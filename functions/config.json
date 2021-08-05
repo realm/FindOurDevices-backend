@@ -44,6 +44,11 @@
     "can_evaluate": {}
   },
   {
+    "name": "setShareLocation",
+    "private": false,
+    "run_as_system": true
+  },
+  {
     "name": "setDisplayName",
     "private": false,
     "run_as_system": true
