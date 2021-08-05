@@ -26,7 +26,7 @@ exports = async function addGroupMember(groupId, newMemberEmail) {
     if (isAlreadyMember)
       return { error: { message: 'The user is already a member of the group.' } };
 
-    if (userDoc.deviceIds.length === 0)
+    if (newMemberUserDoc.deviceIds.length === 0)
       return { error: { message: 'The member must have a device to join the group.' } };
 
     // TODO: Temporarily pick the first device

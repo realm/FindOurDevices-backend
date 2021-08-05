@@ -22,7 +22,7 @@ exports = async function removeGroupMember(groupId, memberId) {
     if (groupDoc.ownerId.toString() === memberId.toString())
       return { error: { message: 'Group owners must remove the group in order to remove themselves.' } };
   
-    const memberUserDoc = await db.collection('User').findOne({ userId: memberId });
+    const memberUserDoc = await db.collection('User').findOne({ _id: memberId });
     if (!memberUserDoc?._id)
       return { error: { message: 'There is no member with the given id.' } };
 
