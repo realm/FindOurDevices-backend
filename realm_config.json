@@ -1,8 +1,8 @@
 {
     "config_version": 20210101,
-    "app_id": "findourdevices-gvqwl",
+    "app_id": "findourdevices-jkqdq",
     "name": "findourdevices",
     "location": "US-VA",
-    "deployment_model": "GLOBAL",
+    "deployment_model": "LOCAL",
     "environment": "development"
 }

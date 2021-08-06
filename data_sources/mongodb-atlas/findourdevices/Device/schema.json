@@ -24,9 +24,6 @@
     "name": {
       "bsonType": "string"
     },
-    "phoneNumber": {
-      "bsonType": "string"
-    },
     "location": {
       "title": "Location",
       "bsonType": "object",

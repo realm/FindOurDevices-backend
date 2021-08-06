@@ -56,6 +56,29 @@
           }
         }
       }
+    },
+    "invitations": {
+      "bsonType": "array",
+      "items": {
+        "title": "GroupInvitation",
+        "bsonType": "object",
+        "required": [
+          "groupId",
+          "groupName",
+          "senderEmail"
+        ],
+        "properties": {
+          "groupId": {
+            "bsonType": "objectId"
+          },
+          "groupName": {
+            "bsonType": "string"
+          },
+          "senderEmail": {
+            "bsonType": "string"
+          }
+        }
+      }
     }
   }
 }
