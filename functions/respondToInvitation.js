@@ -1,6 +1,6 @@
 exports = async function respondToInvitation(groupId, accept, deviceId) {
   if (!groupId)
-    return { error: { message: 'Please provide which group to respond the invitation to.' } };
+    return { error: { message: 'Please provide which group to respond to.' } };
 
   if (typeof accept !== 'boolean')
     return { error: { message: 'Please provide whether to accept the invitation or not.' } };
@@ -15,12 +15,23 @@ exports = async function respondToInvitation(groupId, accept, deviceId) {
   deviceId = BSON.ObjectId(deviceId);
 
   try {
+    // If the user accepts the invitation, we will add the new member to the group,
+    // and remove the invitation. Otherwise, we will just remove the invitation.
     if (accept) {
       const newMemberUserDoc = await db.collection('User').findOne({ _id: userId });
     
+      // Stringify the ObjectIds when comparing as the references themselves may differ
       const isInvited = newMemberUserDoc.invitations?.some(invitation => invitation.groupId.toString() === groupId.toString());
       if (!isInvited)
-        return { error: { message: 'The user has not been invited to the group.' } };
+        return { error: { message: 'You must be invited to the group before responding.' } };
+
+      const isDeviceOwner = newMemberUserDoc.devices?.some(device => device._id.toString() === deviceId.toString());
+      if (!isDeviceOwner)
+        return { error: { message: 'You must be the owner of the device to join the group with.' } };
+
+      const deviceDoc = await db.collection('Device').findOne({ _id: deviceId });
+      if (!deviceDoc?._id)
+        return { error: { message: 'The selected device does not exist.' } };
   
       const groupDoc = await db.collection('Group').findOne({ _id: groupId });
       if (!groupDoc?._id)
@@ -28,15 +39,7 @@ exports = async function respondToInvitation(groupId, accept, deviceId) {
     
       const isAlreadyMember = groupDoc.members?.some(member => member.userId.toString() === userId.toString());
       if (isAlreadyMember)
-        return { error: { message: 'The user is already a member of the group.' } };
-    
-      const deviceDoc = await db.collection('Device').findOne({ _id: deviceId });
-      if (!deviceDoc?._id)
-        return { error: { message: 'The member\'s selected device does not exist.' } };
-    
-      const isDeviceOwner = newMemberUserDoc.devices?.some(device => device._id.toString() === deviceId.toString());
-      if (!isDeviceOwner)
-        return { error: { message: 'The user is not the owner of the device.' } };
+        return { error: { message: 'You are already a member of the group.' } };
 
       // Now we create and insert the new group member into the group's "members" array
       const newGroupMember = {
@@ -72,18 +75,18 @@ exports = async function respondToInvitation(groupId, accept, deviceId) {
       );
     }
 
-    // Remove the GroupInvitation from the User's 'invitations' array 
-    // (this should be done both when the user accepts and declines)
-    // (we don't need to check if the invitation already exists, because the updateOne will only remove it if it exists)
+    // Remove the GroupInvitation from the User's "invitations" array 
+    // (This is done both when the user accepts and declines.)
+    // (If the invitation does not exist, nothing will be pulled.)
     await db.collection('User').updateOne(
       { _id: userId },
-      { $pull: { invitations: groupId } }
+      { $pull: { invitations: { groupId } } }
     );
 
     return { success: true };
   }
   catch (err) {
-    console.error('Error adding group member: ', err.message);
-    return { error: { message: err.message || 'There was an error adding the group member.' } };
+    console.error('Error responding to group invitation: ', err.message);
+    return { error: { message: err.message || 'There was an error responding to the invitation.' } };
   }
 };
