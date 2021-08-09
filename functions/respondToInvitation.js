@@ -25,7 +25,7 @@ exports = async function respondToInvitation(groupId, accept, deviceId) {
       if (!isInvited)
         return { error: { message: 'You must be invited to the group before responding.' } };
 
-      const isDeviceOwner = newMemberUserDoc.devices?.some(device => device._id.toString() === deviceId.toString());
+      const isDeviceOwner = newMemberUserDoc.deviceIds?.some(id => id.toString() === deviceId.toString());
       if (!isDeviceOwner)
         return { error: { message: 'You must be the owner of the device to join the group with.' } };
 
