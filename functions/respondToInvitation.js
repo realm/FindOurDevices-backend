@@ -12,7 +12,6 @@ exports = async function respondToInvitation(groupId, accept, deviceId) {
   const realmUser = context.user;
   const userId = BSON.ObjectId(realmUser.id);
   groupId = BSON.ObjectId(groupId);
-  deviceId = BSON.ObjectId(deviceId);
 
   try {
     // If the user accepts the invitation, we will add the new member to the group,
@@ -25,6 +24,7 @@ exports = async function respondToInvitation(groupId, accept, deviceId) {
       if (!isInvited)
         return { error: { message: 'You must be invited to the group before responding.' } };
 
+      deviceId = BSON.ObjectId(deviceId);
       const isDeviceOwner = newMemberUserDoc.deviceIds?.some(id => id.toString() === deviceId.toString());
       if (!isDeviceOwner)
         return { error: { message: 'You must be the owner of the device to join the group with.' } };
