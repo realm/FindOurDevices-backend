@@ -1,9 +1,13 @@
-exports = async function createGroup(name) {
+exports = async function createGroup(name, deviceId) {
   if (!name)
     return { error: { message: 'Please provide a name for the group.' } };
 
+  if (!deviceId)
+    return { error: { message: 'Please provide which device to create the group with.' } };
+
   const db = context.services.get('mongodb-atlas').db('findourdevices');
   const realmUser = context.user;
+  deviceId = BSON.ObjectId(deviceId);
 
   try {
     const userDoc = await db.collection('User').findOne({ _id: BSON.ObjectId(realmUser.id) });
@@ -12,15 +16,13 @@ exports = async function createGroup(name) {
       return { error: { message: 'There was an error creating the group.' } };
     }
 
-    if (userDoc.deviceIds.length === 0)
-      return { error: { message: 'You must have a device to join a group.' } };
+    const isDeviceOwner = userDoc.deviceIds?.some(id => id.toString() === deviceId.toString());
+    if (!isDeviceOwner)
+      return { error: { message: 'You must be the owner of the device to create the group with.' } };
 
-    // TODO: Temporarily pick the first device
-    const deviceDoc = await db.collection('Device').findOne({ _id: userDoc.deviceIds[0] });
-    if (!deviceDoc?._id) {
-      console.warn('Could not find a device doc matching the device id: ', userDoc.deviceIds[0]);
+    const deviceDoc = await db.collection('Device').findOne({ _id: deviceId });
+    if (!deviceDoc?._id)
       return { error: { message: 'The selected device does not exist.' } };
-    }
 
     // The following is the read-only information available to everyone in the group
     const groupMember = {
@@ -40,7 +42,6 @@ exports = async function createGroup(name) {
       ownerId: userDoc._id,
       name,
       members: [groupMember]
-      // TODO: add alertLog here later
     };
 
     await db.collection('Group').insertOne(group);
