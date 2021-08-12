@@ -16,6 +16,9 @@ exports = async function createGroup(name, deviceId) {
       return { error: { message: 'There was an error creating the group.' } };
     }
 
+    if (userDoc.deviceIds.length === 0)
+      return { error: { message: 'You must have a device to create a group.' } };
+
     const isDeviceOwner = userDoc.deviceIds?.some(id => id.toString() === deviceId.toString());
     if (!isDeviceOwner)
       return { error: { message: 'You must be the owner of the device to create the group with.' } };
