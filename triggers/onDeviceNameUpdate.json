@@ -1,0 +1,28 @@
+{
+  "name": "onDeviceNameUpdate",
+  "type": "DATABASE",
+  "config": {
+    "operation_types": [
+      "UPDATE"
+    ],
+    "database": "findourdevices",
+    "collection": "Device",
+    "service_name": "mongodb-atlas",
+    "match": {
+      "updateDescription.updatedFields.name": {
+        "$exists": true
+      }
+    },
+    "project": {
+      "_id": 1,
+      "operationType": 1,
+      "fullDocument": 1,
+      "updateDescription.updatedFields.name": 1
+    },
+    "full_document": true,
+    "full_document_before_change": false,
+    "unordered": false
+  },
+  "function_name": "updateGroupMemberDeviceName",
+  "disabled": false
+}
