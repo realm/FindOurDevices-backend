@@ -34,18 +34,24 @@ exports = async function respondToInvitation(groupId, accept, deviceId) {
         return { error: { message: 'The selected device does not exist.' } };
   
       const groupDoc = await db.collection('Group').findOne({ _id: groupId });
-      if (!groupDoc?._id)
+      if (!groupDoc?._id) {
+        // If the group does not exist (perhaps it has been removed), we also remove the invitation.
+        await removeInvitation(db, userId. groupId);
         return { error: { message: 'The group does not exist.' } };
+      }
     
       const isAlreadyMember = groupDoc.members?.some(member => member.userId.toString() === userId.toString());
-      if (isAlreadyMember)
+      if (isAlreadyMember) {
+        // If the user is already a member, we also remove the invitation.
+        await removeInvitation(db, userId. groupId);
         return { error: { message: 'You are already a member of the group.' } };
+      }
 
       // Now we create and insert the new group member into the group's "members" array
       const newGroupMember = {
         userId,
         displayName: newMemberUserDoc.displayName,
-        deviceId
+        deviceName: deviceDoc.name
       };
       // Before adding 'deviceDoc.location', we want to be sure that it has been set.
       // Otherwise the location will be undefined and hence break the Realm schema validation.
@@ -63,9 +69,9 @@ exports = async function respondToInvitation(groupId, accept, deviceId) {
       // "groups" array. This object acts as the user-specific settings for that group.
       const newGroupMembership = {
         groupId,
-        groupPartition: groupDoc._partition,
         groupName: groupDoc.name,
-        deviceId,
+        deviceName: deviceDoc.name,
+        isOwner: false,
         shareLocation: true
       };
   
@@ -75,13 +81,9 @@ exports = async function respondToInvitation(groupId, accept, deviceId) {
       );
     }
 
-    // Remove the GroupInvitation from the User's "invitations" array 
-    // (This is done both when the user accepts and declines.)
+    // Removing the invitation is done both when the user accepts and declines.
     // (If the invitation does not exist, nothing will be pulled.)
-    await db.collection('User').updateOne(
-      { _id: userId },
-      { $pull: { invitations: { groupId } } }
-    );
+    await removeInvitation(db, userId. groupId);
 
     return { success: true };
   }
@@ -89,4 +91,14 @@ exports = async function respondToInvitation(groupId, accept, deviceId) {
     console.error('Error responding to group invitation: ', err.message);
     return { error: { message: err.message || 'There was an error responding to the invitation.' } };
   }
+};
+
+// Callers of this function should be responsible for awaiting it.
+const removeInvitation = async (db, userId, groupId) => {
+  // Remove the GroupInvitation from the User's "invitations" array 
+  // (If the invitation does not exist, nothing will be pulled.)
+  db.collection('User').updateOne(
+    { _id: userId },
+    { $pull: { invitations: { groupId } } }
+  );
 };

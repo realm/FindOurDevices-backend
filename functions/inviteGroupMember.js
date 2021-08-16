@@ -22,6 +22,9 @@ exports = async function inviteGroupMember(groupId, newMemberEmail) {
     if (!newMemberUserDoc?._id)
       return { error: { message: 'There is no member with the given email.' } };
 
+    if (newMemberUserDoc._id.toString() === realmUser.id)
+      return { error: { message: 'You cannot invite yourself.' } };
+
     const isAlreadyMember = groupDoc.members?.some(member => member.userId.toString() === newMemberUserDoc._id.toString());
     if (isAlreadyMember)
       return { error: { message: 'The user is already a member of the group.' } };

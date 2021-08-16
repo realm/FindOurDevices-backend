@@ -30,13 +30,13 @@ exports = async function removeGroupMember(groupId, memberId) {
     if (!isGroupMember)
       return { error: { message: 'The user is not a member of the group.' } };
 
-    // Remove the member from the Group's 'members' array
+    // Remove the member from the Group's "members" array
     await db.collection('Group').updateOne(
       { _id: groupId },
       { $pull: { members: { userId: memberId } } }
     );
 
-    // Remove the group membership from the User's 'groups' array
+    // Remove the group membership from the User's "groups" array
     await db.collection('User').updateOne(
       { _id: memberId },
       { $pull: { groups: { groupId } } }

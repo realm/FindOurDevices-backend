@@ -20,7 +20,7 @@ exports = async function setDisplayName(name) {
       { $set: { displayName: name } }
     );
 
-    const groupIds = userDoc.groups.map(group => group.groupId);
+    const groupIds = userDoc.groups.map(groupMembership => groupMembership.groupId);
     
     // We can use MongoDB's "arrayFilters" to update all elements that match the conditions.
     // db.collection.updateMany(

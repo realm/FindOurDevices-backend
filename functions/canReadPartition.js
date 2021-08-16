@@ -15,22 +15,22 @@ exports = async function canReadPartition(partition) {
     case 'device':
       return partitionValue === realmUser.id;
     case 'group':
-      return await isGroupMember(db, BSON.ObjectId(realmUser.id), partition);
+      return await isGroupMember(db, BSON.ObjectId(realmUser.id), BSON.ObjectId(partitionValue));
     default:
-      console.warn('Unsupported partition key/prefix.');
+      console.warn('Unsupported partition key/prefix: ', partitionKey);
       return false;
   }
 };
 
-const isGroupMember = async (db, userId, groupPartition) => {
+const isGroupMember = async (db, userId, groupId) => {
   try {
     // In MongoDB you can use dot-notation to query embedded/nested documents.
     // This query selects the user with matching ids and where the "groups" array
-    // field has an embedded document with a key "groupPartition" whose value
-    // is the provided group partition string.
+    // field has an embedded document with a key "groupId" whose value is the
+    // provided group ID.
     const currentUserDoc = await db.collection('User').findOne({
       _id: userId,
-      'groups.groupPartition': groupPartition
+      'groups.groupId': groupId
     });
 
     // The "!!" converts the value to a boolean (true if truthy, false if falsy)

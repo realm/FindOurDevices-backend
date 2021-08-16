@@ -7,7 +7,8 @@ exports = async function createNewUserDocument({ user }) {
     email: user.data.email,
     displayName: getInitialDisplayName(user.data.email),
     deviceIds: [],
-    groups: []
+    groups: [],
+    invitations: []
   };
 
   try {

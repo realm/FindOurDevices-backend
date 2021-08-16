@@ -22,7 +22,7 @@ exports = async function leaveGroup(groupId) {
       { $pull: { members: { userId } } }
     );
 
-    // Remove the User's GroupMembership from it's 'groups' array
+    // Remove the User's GroupMembership from it's "groups" array
     await db.collection('User').updateOne(
       { _id: userId },
       { $pull: { groups: { groupId } } }

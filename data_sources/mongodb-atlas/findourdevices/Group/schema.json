@@ -28,7 +28,7 @@
         "required": [
           "userId",
           "displayName",
-          "deviceId"
+          "deviceName"
         ],
         "properties": {
           "userId": {
@@ -37,8 +37,8 @@
           "displayName": {
             "bsonType": "string"
           },
-          "deviceId": {
-            "bsonType": "objectId"
+          "deviceName": {
+            "bsonType": "string"
           },
           "location": {
             "title": "Location",

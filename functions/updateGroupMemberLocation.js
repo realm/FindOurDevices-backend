@@ -35,8 +35,8 @@ exports = async function updateGroupMemberLocation({ fullDocument, updateDescrip
     // make sure that the user has opted to share its location.
     // (Stringify the ObjectIds when comparing as the references themselves may differ)
     const groupIds = userDoc.groups
-      .filter(group => group.deviceId.toString() === deviceId.toString() && group.shareLocation)
-      .map(group => group.groupId);
+      .filter(groupMembership => groupMembership.deviceId.toString() === deviceId.toString() && groupMembership.shareLocation)
+      .map(groupMembership => groupMembership.groupId);
 
     if (groupIds.length === 0)
       return;
@@ -51,7 +51,7 @@ exports = async function updateGroupMemberLocation({ fullDocument, updateDescrip
     return await db.collection('Group').updateMany(
       { _id: { $in: groupIds } },
       { $set: { 'members.$[member].location': updatedLocation } },
-      { arrayFilters: [ { 'member.userId': userId, 'member.deviceId': deviceId } ] }
+      { arrayFilters: [ { 'member.userId': userId } ] }
     );
   }
   catch (err) {

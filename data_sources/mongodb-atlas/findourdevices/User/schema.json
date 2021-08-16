@@ -33,23 +33,23 @@
         "bsonType": "object",
         "required": [
           "groupId",
-          "groupPartition",
           "groupName",
           "deviceId",
+          "isOwner",
           "shareLocation"
         ],
         "properties": {
           "groupId": {
             "bsonType": "objectId"
           },
-          "groupPartition": {
-            "bsonType": "string"
-          },
           "groupName": {
             "bsonType": "string"
           },
           "deviceId": {
             "bsonType": "objectId"
+          },
+          "isOwner": {
+            "bsonType": "bool"
           },
           "shareLocation": {
             "bsonType": "bool"

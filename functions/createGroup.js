@@ -31,7 +31,7 @@ exports = async function createGroup(name, deviceId) {
     const groupMember = {
       userId: userDoc._id,
       displayName: userDoc.displayName,
-      deviceId: deviceDoc._id
+      deviceName: deviceDoc.name
     };
     // Before adding deviceDoc.location, we want to be sure that it has been set.
     // Otherwise the location will be undefined and hence break the Realm schema validation.
@@ -52,9 +52,9 @@ exports = async function createGroup(name, deviceId) {
     // The following is the read-only information available only to the specific user
     const groupMembership = {
       groupId: group._id,
-      groupPartition: group._partition,
       groupName: group.name,
       deviceId: deviceDoc._id,
+      isOwner: true,
       shareLocation: true
     };
 
