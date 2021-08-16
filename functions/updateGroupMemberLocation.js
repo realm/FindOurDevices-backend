@@ -33,8 +33,7 @@ exports = async function updateGroupMemberLocation({ fullDocument, updateDescrip
 
     // When filtering out the group memberships that the device is associated with, also
     // make sure that the user has opted to share its location.
-    // (As seen below, we need to convert the device IDs to strings before comparing them
-    // whenever the ID is retrieved from fullDocument._id)
+    // (Stringify the ObjectIds when comparing as the references themselves may differ)
     const groupIds = userDoc.groups
       .filter(group => group.deviceId.toString() === deviceId.toString() && group.shareLocation)
       .map(group => group.groupId);
