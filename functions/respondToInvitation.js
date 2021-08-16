@@ -70,7 +70,7 @@ exports = async function respondToInvitation(groupId, accept, deviceId) {
       const newGroupMembership = {
         groupId,
         groupName: groupDoc.name,
-        deviceName: deviceDoc.name,
+        deviceId,
         isOwner: false,
         shareLocation: true
       };
@@ -83,7 +83,7 @@ exports = async function respondToInvitation(groupId, accept, deviceId) {
 
     // Removing the invitation is done both when the user accepts and declines.
     // (If the invitation does not exist, nothing will be pulled.)
-    await removeInvitation(db, userId. groupId);
+    await removeInvitation(db, userId, groupId);
 
     return { success: true };
   }
