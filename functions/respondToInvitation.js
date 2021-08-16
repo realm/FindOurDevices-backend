@@ -36,14 +36,14 @@ exports = async function respondToInvitation(groupId, accept, deviceId) {
       const groupDoc = await db.collection('Group').findOne({ _id: groupId });
       if (!groupDoc?._id) {
         // If the group does not exist (perhaps it has been removed), we also remove the invitation.
-        await removeInvitation(db, userId. groupId);
+        await removeInvitation(db, userId, groupId);
         return { error: { message: 'The group does not exist.' } };
       }
     
       const isAlreadyMember = groupDoc.members?.some(member => member.userId.toString() === userId.toString());
       if (isAlreadyMember) {
         // If the user is already a member, we also remove the invitation.
-        await removeInvitation(db, userId. groupId);
+        await removeInvitation(db, userId, groupId);
         return { error: { message: 'You are already a member of the group.' } };
       }
 
