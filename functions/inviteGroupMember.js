@@ -14,9 +14,9 @@ exports = async function inviteGroupMember(groupId, newMemberEmail) {
     if (!groupDoc?._id)
       return { error: { message: 'The group does not exist.' } };
   
-    // Stringify the ObjectIds when comparing as the references themselves may differ
-    if (groupDoc.ownerId.toString() !== realmUser.id)
-      return { error: { message: 'Only group owners can invite other members.' } };
+    // If you only want group owners to be able to invite other members, uncomment the following lines
+    // if (groupDoc.ownerId.toString() !== realmUser.id)
+    //   return { error: { message: 'Only group owners can invite other members.' } };
   
     const newMemberUserDoc = await db.collection('User').findOne({ email: newMemberEmail });
     if (!newMemberUserDoc?._id)
