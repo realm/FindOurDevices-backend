@@ -1,5 +1,6 @@
 {
   "config_version": 20210101,
+  "app_id": "findourdevices-oqpku",
   "name": "findourdevices",
   "location": "US-VA",
   "deployment_model": "LOCAL",
