@@ -1,9 +1,20 @@
+# FindOurDevices - MongoDB Realm App (backend)
+
+A backend MongoDB Realm application for allowing users to see location and movement of its own devices or those of people in the same private group. 
+
+#### React Native frontend repo:
+
+> The Realm React Native frontend can be found [here](https://github.com/realm/FindOurDevices).
+
+#### Blog post:
+
+> To read more about the app and its use of Realm, as well as learning more about RealmDB data modeling, partitions, and permissions, see the app's blog post at: [insert link to blog post here](https://)
+
 # Get Started
 
 ## 1. Install `mongodb-realm-cli`
 
-You can import the ready-made MongoDB Realm backend using the
-`mongodb-realm-cli`, which you can install with npm:
+You can import the ready-made MongoDB Realm backend using the `mongodb-realm-cli`, which you can install with npm:
 
 ```bash
 npm install -g mongodb-realm-cli
@@ -11,21 +22,13 @@ npm install -g mongodb-realm-cli
 
 ## 2. Create an Atlas cluster with MongoDB 4.4+
 
-To have a backend for your FindOurDevices app, you will need a MongoDB Atlas
-cluster with MongoDB 4.4 or higher. To create an Atlas account, project, and cluster, visit the [Atlas
-UI](https://cloud.mongodb.com/?tck=docs_realm).
+To have a backend for your FindOurDevices app, you will need a MongoDB Atlas cluster with MongoDB 4.4 or higher. To create an Atlas account, project, and cluster, visit the [Atlas UI](https://cloud.mongodb.com/?tck=docs_realm).
 
-> ⚠️ Sync requires MongoDB 4.4 or above. Be sure to select at least MongoDB
-> version 4.4 when building your cluster!
+> ⚠️ Sync requires MongoDB 4.4 or above. Be sure to select at least MongoDB version 4.4 when building your cluster!
 
 ## 3. Create an API Key and authenticate the CLI
 
-To authenticate with the `realm-cli`, you must create an API key with **Project
-Owner** permissions for your project in the **Project Access Manager** view.
-Click the **Access Manager** at the top of the Atlas view to find it. Please
-follow the [instructions on the MongoDB documentation
-site](https://docs.mongodb.com/realm/deploy/realm-cli-reference/#authenticate-a-cli-user)
-for more information.
+To authenticate with the `realm-cli`, you must create an API key with **Project Owner** permissions for your project in the **Project Access Manager** view. Click the **Access Manager** at the top of the Atlas view to find it. Please follow the [instructions on the MongoDB documentation site](https://docs.mongodb.com/realm/deploy/realm-cli-reference/#authenticate-a-cli-user) for more information.
 
 Once created, pass the API keys to `realm-cli login` to log in:
 
