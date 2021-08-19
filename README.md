@@ -38,6 +38,16 @@ realm-cli login --api-key=[public API key] --private-api-key=[private API key]
 
 ## 4. Configure the Realm backend app
 
+Clone the repo if you have not already done so:
+
+```bash
+# using https
+git clone https://github.com/realm/FindOurDevices-backend.git
+
+# using ssh
+git clone git@github.com:realm/FindOurDevices-backend.git
+```
+
 In `/data_sources/mongodb-atlas/config.json`, add the name of the MongoDB cluster you set up in **Step 2** to the `config.clusterName` field. (The default name when setting it up in Atlas is `Cluster0`.)
 
 ```json
