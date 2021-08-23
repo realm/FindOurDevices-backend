@@ -1,16 +1,40 @@
 # FindOurDevices - MongoDB Realm App (backend)
 
-A backend MongoDB Realm application for allowing users to see location and movement of its own devices or those of people in the same private group. 
+A backend MongoDB Realm example application for allowing users to see location and movement of its own devices or those of people in the same private group. 
 
-#### React Native frontend repo:
+#### React Native Frontend:
 
 > The Realm React Native frontend can be found [here](https://github.com/realm/FindOurDevices).
 
-#### Blog post:
+#### Diagrams & Data Modeling Pointers:
 
-> To read more about the app and its use of Realm, as well as learning more about RealmDB data modeling, partitions, and permissions, see the app's blog post at: [insert link to blog post here](https://)
+> To get a better overview of the implementation as well as the RealmDB data modeling, partitions, and permissions, see [Diagrams](#diagrams).
 
-# Get Started
+# Table of Contents
+
+- [Getting Started](#getting-started)
+  - [1. Install mongodb-realm-cli](#1-install-mongodb-realm-cli)
+  - [2. Create an Atlas cluster with MongoDB 4.4+](#2-create-an-atlas-cluster-with-mongodb-44+)
+  - [3. Create an API Key and authenticate the CLI](#3-create-an-api-key-and-authenticate-the-cli)
+  - [4. Configure the Realm backend app](#4-configure-the-realm-backend-app)
+  - [5. Import the Realm backend app](#5-import-the-realm-backend-app)
+  - [6. Add the Realm App ID to the configuration](#5-add-the-realm-app-id-to-the-configuration)
+- [Troubleshooting](#troubleshooting)
+  - [Objects not syncing](#objects-not-syncing)
+  - [Triggers not being fired](#triggers-not-being-fired)
+  - [Functions not being called by triggers](#functions-not-being-called-by-triggers)
+  - [Permission errors](#permission-errors)
+  - [Detecting network connection on simulator when reenabling WiFi](#detecting-network-connection-on-simulator-when-reenabling-wifi)
+- [Diagrams](#diagrams)
+  - [RealmDB Data Model](#realmdb-data-model)
+  - [Object Relationships Within and Across Partitions](#object-relationships-within-and-across-partitions)
+  - [Comparison of Permissions for Shared Realms](#comparison-of-permissions-for-shared-realms)
+  - [Solving Privacy Issues of an Earlier Data Model Version](#solving-privacy-issues-of-an-earlier-data-model-version)
+  - [Visual Representation of the Integration of Realm](#visual-representation-of-the-integration-of-realm)
+  - [Activities and Data Flow When Updating the Location of a Device](#activities-and-data-flow-when-updating-the-location-of-a-device)
+
+
+# Getting Started
 
 ## 1. Install `mongodb-realm-cli`
 
@@ -102,3 +126,85 @@ realm-cli pull --remote [Realm App ID]
 ```
 
 Congratulations! You now have a working MongoDB Realm backend with Sync enabled.
+
+# Troubleshooting
+
+A great help when troubleshooting is to look at the log of the app in the [MongoDB Realm UI](https://account.mongodb.com/account/login) under `Manage > Logs` in the sidebar.
+
+## Objects not syncing
+
+When developing and modifying schemas or making changes to documents directly in [MongoDB Atlas](https://account.mongodb.com/account/login), you may experience issues syncing the modfied object if the changes do not conform to your Realm data model. Realm Sync only propagates valid objects without throwing any errors if any of the objects do not conform to your schema/model.
+
+Make sure to check that all expected fields and types exist on the object/document.
+
+Some issues may also be related to permissions (see [Permission errors](#permission-errors)).
+
+## Triggers not being fired
+
+The first time you import your backend Realm app to MongoDB Realm, some triggers may not get enabled. Go to the [MongoDB Realm UI](https://account.mongodb.com/account/login) then navigate to `Build > Triggers` in the sidebar. Enable any trigger that is not currently enabled.
+
+Also make sure the trigger is configured correctly on the backend. Trigger configurations contain a `match` field where you may specify when the trigger should fire using the MongoDB query language.
+
+## Functions not being called by triggers
+
+When developing, if you notice from looking at the logs in the [MongoDB Realm UI](https://account.mongodb.com/account/login) that a trigger is fired but the function that the trigger is supposed to call is not called, you may be using a device with an IP-address that is not listed on the access list of the API key (see [Permission errors](#permission-errors)).
+
+## Permission errors
+
+When the Realm backend was set up, you had to add your IP to the Realm CLI API key access list. If you develop from another device or using a different network connection (or other reasons), your IP address will be different.
+
+To edit the access list, navigate to `Access Mananger > Project Access > API Keys` at the top of the [MongoDB Atlas UI](https://account.mongodb.com/account/login) and choose which of your keys to edit.
+
+# Diagrams
+
+The diagrams presented and the notes therein provide insights into ways of thinking about RealmDB data modeling, partitioning, and permissions.
+
+> FindOurDevices uses a synced cluster with only [synced realms](https://docs.mongodb.com/realm/sync/rules/). Data access rules and permissions are different for [non-synced realms](https://docs.mongodb.com/realm/mongodb/define-roles-and-permissions/) which provide more granular, field-level rules.
+
+## RealmDB Data Model
+
+**Description:** An Entity Relationship diagram of the FindOurDevices data model showing all Realm objects and their relationships.
+
+**Helps understand:** Data modeling in Realm.
+
+**[INSERT DIAGRAM HERE]**
+
+## Object Relationships Within and Across Partitions
+
+**Description:** Potential problems that you may run into when modeling data and referencing objects, as well as various solutions for circumventing the issue and what solution FindOurDevices uses.
+
+**Helps understand:** Partitioning in Realm.
+
+**[INSERT DIAGRAM HERE]**
+
+## Comparison of Permissions for Shared Realms
+
+**Description:** A comparison of the permissions of two different applications (one being FindOurDevices) for the part of the app that uses a shared realm. It explains why the synced permission rules for FindOurDevices are not the same (i.e. does not allow “write” permission).
+
+**Helps understand:** Partitions and permissions for synced realms.
+
+**[INSERT DIAGRAM HERE]**
+
+## Solving Privacy Issues of an Earlier Data Model Version
+
+**Description:** Explanation of permission related issues of an earlier data model version of FindOurDevices and how a remodel solved the issue.
+
+**Helps understand:** Partitions and permissions for synced realms and how to spot a similar weakness in your data model.
+
+**[INSERT DIAGRAM HERE]**
+
+## Visual Representation of the Integration of Realm
+
+**Description:** Illustration of how Realm is integrated in FindOurDevices (for the use case of having groups) and from what exact places of the data model the data on various screens come from. It also shows what Realm-related operations are performed when the user interacts with the screen.
+
+**Helps understand:** Realm integration, denormalization, and opening/closing of realms.
+
+**[INSERT DIAGRAM HERE]**
+
+## Activities and Data Flow When Updating the Location of a Device
+
+**Description:** Illustration of what activities happen and how the data flows when the main use case of the app occurs (i.e. a device moves X meters and the new location can be seen on the map by the user and any group members that the user is a part of). All activities within a specific column in the diagram represent what happens on that specific entity (e.g. on John’s phone, Mary’s phone, or on the MongoDB Realm backend).
+
+**Helps understand:** Realm integration, Realm Sync, partitioning, and change listeners.
+
+**[INSERT DIAGRAM HERE]**
