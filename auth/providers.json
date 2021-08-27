@@ -1,4 +1,9 @@
 {
+  "anon-user": {
+    "name": "anon-user",
+    "type": "anon-user",
+    "disabled": true
+  },
   "local-userpass": {
     "name": "local-userpass",
     "type": "local-userpass",
