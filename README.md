@@ -113,6 +113,8 @@ realm-cli push
 
 Follow the prompts and wait for the app to deploy (hit Enter to accept the suggested values).
 
+Congratulations! You now have a working MongoDB Realm backend with Sync enabled.
+
 ## 6. Add the Realm App ID to the configuration
 
 If you want to make changes to the backend via your local code (using `realm-cli push`), the Realm App ID must first be specified in `realm_config.json`. Otherwise, it will ask if you want to create a new Realm app.
@@ -137,8 +139,6 @@ You can either manually add the ID before pushing any changes:
 ```bash
 realm-cli pull --remote [Realm App ID]
 ```
-
-Congratulations! You now have a working MongoDB Realm backend with Sync enabled.
 
 # Troubleshooting
 
