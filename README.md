@@ -1,6 +1,6 @@
 # FindOurDevices - MongoDB Realm App (backend)
 
-A backend MongoDB Realm example application for allowing users to see location and movement of its own devices or those of people in the same private group. 
+A backend MongoDB Realm example application for allowing users to see location and movement of their own devices or those of people in the same private group. 
 
 #### React Native Frontend:
 
@@ -61,7 +61,7 @@ realm-cli login --api-key=[public API key] --private-api-key=[private API key]
 
 ## 4. Configure the Realm backend app
 
-Clone the repo if you have not already done so:
+1. Clone the repo if you have not already done so:
 
 ```bash
 # using https
@@ -71,7 +71,7 @@ git clone https://github.com/realm/FindOurDevices-backend.git
 git clone git@github.com:realm/FindOurDevices-backend.git
 ```
 
-In `/data_sources/mongodb-atlas/config.json`, add the name of the MongoDB cluster you set up in **Step 2** to the `config.clusterName` field. (The default name when setting it up in Atlas is `Cluster0`.)
+2. In `/data_sources/mongodb-atlas/config.json`, add the name of the MongoDB cluster you set up in **Step 2** to the `config.clusterName` field. (The default name when setting it up in Atlas is `Cluster0`.)
 
 ```json
 {
@@ -86,7 +86,21 @@ In `/data_sources/mongodb-atlas/config.json`, add the name of the MongoDB cluste
 }
 ```
 
-In `realm_config.json`, verify that there is **not** an `app_id` field. (This will be set once the app has been imported in the next step.)
+3. In `realm_config.json`, verify that there is **not** an `app_id` field. (This will be set once the app has been imported in the next step.)
+
+4. Optionally, enable [development mode](https://docs.mongodb.com/realm/sync/development-mode/) to streamline schema design. (**Not suitable for production.**) In your Realm Sync configuration `/sync/config.json`, set `development_mode_enabled` to `true`.
+
+```json
+{
+  "state": "enabled",
+  "database_name": "findourdevices",
+  "partition": {
+    ...
+  },
+  "development_mode_enabled": true,
+  "service_name": "mongodb-atlas"
+}
+```
 
 ## 5. Import the Realm backend app
 
@@ -158,7 +172,7 @@ To edit the access list, navigate to `Access Mananger > Project Access > API Key
 
 The diagrams presented and the notes therein provide insights into ways of thinking about RealmDB data modeling, partitioning, and permissions.
 
-> ⚠️ FindOurDevices uses a synced cluster with only [synced realms](https://docs.mongodb.com/realm/sync/rules/). Data access rules and permissions are different for [non-synced realms](https://docs.mongodb.com/realm/mongodb/define-roles-and-permissions/) which provide more granular, field-level rules.
+> FindOurDevices uses a synced cluster with only [synced realms](https://docs.mongodb.com/realm/sync/rules/). Data access rules and permissions are different for [non-synced realms](https://docs.mongodb.com/realm/mongodb/define-roles-and-permissions/) which provide document-level and field-level rules.
 
 ## RealmDB Data Model
 

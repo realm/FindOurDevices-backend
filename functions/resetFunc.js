@@ -22,7 +22,7 @@
           }
         };
       let app = new Realm.App(appConfig);
-      let client = app.auth.emailPassword;
+      let client = app.emailPasswordAuth;
       await client.resetPassword(token, tokenId, newPassword);
 
     'fail': the user's password is not reset and will not be able to log in with that password.
