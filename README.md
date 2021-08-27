@@ -244,4 +244,4 @@ Illustration of what activities happen and how the data flows when the main use 
 
 Realm integration, Realm Sync, partitioning, and change listeners.
 
-![FindOurDevices-data_flow_updating_location](https://user-images.githubusercontent.com/81748770/130425393-7d4e5203-2911-45cf-bbab-9ec434bff7e8.png)
+![FindOurDevices-data_flow_updating_location](https://user-images.githubusercontent.com/81748770/131126193-6556765c-0f9c-45c5-b460-399c26479a61.png)
